@@ -109,6 +109,8 @@ public class HalamanAwalFrame extends javax.swing.JFrame {
 Connection con = DatabaseUtilities.getConnection();
 String sql = "SELECT * FROM users WHERE password = ?";
 PreparedStatement ps = con.prepareStatement(sql);
+
+
 ps.setString(1, password.getText());
 ResultSet rs = ps.executeQuery();
         
