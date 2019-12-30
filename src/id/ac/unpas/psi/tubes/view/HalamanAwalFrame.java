@@ -106,11 +106,11 @@ public class HalamanAwalFrame extends javax.swing.JFrame {
         //Egy Login 
         try {
   
-Connection con = DatabaseUtilities.getConnection();
-    String sql = "SELECT * FROM users WHERE password = ?";
+        Connection con = DatabaseUtilities.getConnection();
+        String sql = "SELECT * FROM users WHERE password = ?";
         PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, password.getText());
-                ResultSet rs = ps.executeQuery();
+        ps.setString(1, password.getText());
+        ResultSet rs = ps.executeQuery();
         
         if(rs.next()){
              HalamanMenu menu = new HalamanMenu();
