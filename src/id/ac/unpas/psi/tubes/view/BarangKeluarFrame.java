@@ -11,12 +11,19 @@ import com.mysql.jdbc.Statement;
 import id.ac.unpas.psi.tubes.controller.BarangController;
 import id.ac.unpas.psi.tubes.model.data.BarangModel;
 import id.ac.unpas.psi.tubes.model.pojo.Barang;
+import id.ac.unpas.psi.tubes.utilities.DatabaseUtilities;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 
 /**
@@ -61,6 +68,8 @@ public class BarangKeluarFrame extends javax.swing.JFrame {
         btnCetak = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
         btnKembali = new javax.swing.JButton();
+        btnPratinjau = new javax.swing.JButton();
+        tfPratinjau = new javax.swing.JTextField();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -111,6 +120,11 @@ public class BarangKeluarFrame extends javax.swing.JFrame {
         lblBulan.setText("Pilih Bulan:");
 
         btnCetak.setText("Cetak Data");
+        btnCetak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCetakActionPerformed(evt);
+            }
+        });
 
         btnReset.setText("Reset");
 
@@ -151,6 +165,13 @@ public class BarangKeluarFrame extends javax.swing.JFrame {
                 .addGap(26, 26, 26))
         );
 
+        btnPratinjau.setText("Pratinjau");
+        btnPratinjau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPratinjauActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jScrollPaneLayout = new javax.swing.GroupLayout(jScrollPane);
         jScrollPane.setLayout(jScrollPaneLayout);
         jScrollPaneLayout.setHorizontalGroup(
@@ -161,7 +182,10 @@ public class BarangKeluarFrame extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jScrollPaneLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnPratinjau)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfPratinjau, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCari)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -173,9 +197,12 @@ public class BarangKeluarFrame extends javax.swing.JFrame {
                 .addContainerGap(51, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jScrollPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCari))
+                .addGroup(jScrollPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jScrollPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCari)
+                        .addComponent(btnPratinjau))
+                    .addComponent(tfPratinjau, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -229,9 +256,43 @@ public class BarangKeluarFrame extends javax.swing.JFrame {
             int selectedIndex = tblBarang.getSelectedRow();
         } if(cBulan.getSelectedItem().equals("Februari")) {
                     JOptionPane.showMessageDialog(null, "Anda Telah Logout");
- 
+            }
     }//GEN-LAST:event_cBulanActionPerformed
-    }
+
+    private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
+        // TODO add your handling code here:
+        try {
+            JasperPrint jasperPrint = JasperFillManager.fillReport(
+                    "src/id/ac/unpas/psi/tubes/report/barang_report.jasper",
+                    null,
+                    DatabaseUtilities.getConnection());
+            JasperViewer.viewReport(jasperPrint, true);
+        } catch (JRException e) {
+            JOptionPane.showMessageDialog(this, e);
+        } catch (SQLException ex) {
+            Logger.getLogger(BarangKeluarFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnCetakActionPerformed
+
+    private void btnPratinjauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPratinjauActionPerformed
+        // TODO add your handling code here:
+        try {
+            HashMap param = new HashMap();
+            param.put("idText", "%"+tfPratinjau.getText()+"%");
+            // idText adalah parameter pada template report
+            
+            JasperPrint jasperPrint = JasperFillManager.fillReport(
+                    "src/id/ac/unpas/psi/tubes/report/barang_param_report.jasper",
+                    param,
+                    DatabaseUtilities.getConnection());
+             JasperViewer.viewReport(jasperPrint, true);
+        } catch (JRException e) {
+            JOptionPane.showMessageDialog(this, e);
+        } catch (SQLException ex) {
+            Logger.getLogger(BarangKeluarFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnPratinjauActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -242,6 +303,7 @@ public class BarangKeluarFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnCari;
     private javax.swing.JButton btnCetak;
     private javax.swing.JButton btnKembali;
+    private javax.swing.JButton btnPratinjau;
     private javax.swing.JButton btnReset;
     private javax.swing.JComboBox cBulan;
     private javax.swing.JPanel jPanel1;
@@ -251,6 +313,7 @@ public class BarangKeluarFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblBulan;
     private javax.swing.JTable tblBarang;
     private javax.swing.JTextField tfCari;
+    private javax.swing.JTextField tfPratinjau;
     // End of variables declaration//GEN-END:variables
 
     private void populateDataToTable() throws SQLException {
@@ -266,4 +329,5 @@ public class BarangKeluarFrame extends javax.swing.JFrame {
                     model.addRow(row);
         }
     }
+    
 }

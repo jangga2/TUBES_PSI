@@ -123,7 +123,7 @@ public class HalamanMenu extends javax.swing.JFrame {
             this.dispose();
             menu.setVisible(true);
         } catch (SQLException ex) {
-            Logger.getLogger(HalamanMenu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BarangFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnMasukActionPerformed
 
@@ -133,7 +133,7 @@ public class HalamanMenu extends javax.swing.JFrame {
             this.dispose();
             keluar.setVisible(true);
         } catch (SQLException ex) {
-            Logger.getLogger(HalamanMenu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BarangKeluarFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnKeluarActionPerformed
 

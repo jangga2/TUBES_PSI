@@ -5,6 +5,7 @@
  */
 package id.ac.unpas.psi.tubes.main;
 
+import id.ac.unpas.psi.tubes.view.BarangKeluarFrame;
 import id.ac.unpas.psi.tubes.view.HalamanAwalFrame;
 import id.ac.unpas.psi.tubes.view.HalamanMenu;
 import java.sql.SQLException;
